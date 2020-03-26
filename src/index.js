@@ -1,8 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import firebase from 'firebase'
+import 'firebase/firestore'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './index.css';
+
+
+firebase.initializeApp({
+  apiKey: "AIzaSyBrPvssd3_sCIRnb2wt_JGJ8-DjHS4-5jk",
+  authDomain: "covid-19rtmap.firebaseapp.com",
+  databaseURL: "https://covid-19rtmap.firebaseio.com",
+  projectId: "covid-19rtmap",
+  storageBucket: "covid-19rtmap.appspot.com",
+  messagingSenderId: "765942707817",
+  appId: "1:765942707817:web:6b40e866f0e760cc6d94f8"
+});
+
 
 ReactDOM.render(
   <React.StrictMode>
