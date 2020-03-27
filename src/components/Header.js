@@ -3,7 +3,8 @@ import {Navbar, Nav} from 'react-bootstrap';
 
 
 
-const Header = ({handleAuth,handleLogOut}) => {
+const Header = ({handleAuth,handleLogOut,user}) => {
+   
     return ( 
      <Navbar bg="light" expand="lg">
         <Navbar.Brand href="#home">Covid19-Map</Navbar.Brand>
@@ -11,18 +12,23 @@ const Header = ({handleAuth,handleLogOut}) => {
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
                     <Nav.Link href="#home">Mapa</Nav.Link>
-                    <Nav.Link href="#link">Stadisticas</Nav.Link>
+                    <Nav.Link href="#link">Estadisticas</Nav.Link>
                 </Nav>  
         </Navbar.Collapse>
         <Navbar.Collapse className="justify-content-end">
-            <Navbar.Text>
-                Signed in as: <a href="#login">Prueba </a>
-                <button className="btn btn-outline-danger btn-sm">Log Out</button>
-                <button className="btn btn-outline-success btn-sm">Log In</button>
-            </Navbar.Text>
+                {user
+                ?(
+                <Navbar.Text> 
+                    Signed in as:<span> {user.displayName}</span> <button className="btn btn-outline-danger btn-sm" onClick={handleLogOut}>Log Out</button>    
+                </Navbar.Text>)
+                :
+                (<button className="btn btn-outline-success btn-sm" onClick={handleAuth}>Log In</button>)}
+
         </Navbar.Collapse>
         </Navbar>
+
      );
+    
 }
  
 export default Header;
