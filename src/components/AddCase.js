@@ -10,7 +10,7 @@ const AddCase = ({handleCase}) => {
          variant="danger" 
          size="lg" block
          onClick={handleCase}>
-            Submit Case
+           Registrar nuevo caso
         </Button>
         </div>
        

@@ -11,7 +11,7 @@ function App() {
   
   const[datos,guardarDatos]=useState({user:''}); 
   const[posicion,guardarPosicionActual]=useState({posicionactual: null});
-  const[posiciones,guardarPosiciones]=useState([])
+  const[posiciones,guardarPosiciones]=useState({ubicaciones: []})
 
 
     const {user}=datos;
@@ -27,6 +27,17 @@ function App() {
             guardarDatos({user:null})
           }
         })),[datos])
+
+        useEffect(()=>(
+          firebase.database().ref('VirusMapLocations').on('child_added',snapshot=>{
+            guardarPosiciones({
+                
+                ubicaciones: posiciones.ubicaciones.concat(snapshot.val())
+            })
+           
+          })
+          // eslint-disable-next-line
+        ),[])
         
         const handleAuth=()=>{
           const provider= new firebase.auth.GoogleAuthProvider();
@@ -44,8 +55,10 @@ function App() {
             const dbRef=firebase.database().ref('VirusMapLocations')
             const newLocation = dbRef.push();
             const data={
-              longitud:posicion.posicionactual.lng,
-              latitud:posicion.posicionactual.lat,
+              latlng:{
+              lng:posicion.posicionactual.lng,
+              lat:posicion.posicionactual.lat
+              },
               CasoRegistradoPor: datos.user.displayName
             }
             newLocation.set(data);
@@ -62,6 +75,7 @@ function App() {
         handlePosition={handlePosition}
         user={datos.user}
         posicion={posicion}
+        posiciones={posiciones.ubicaciones}
       />
        {user?(
         <AddCase

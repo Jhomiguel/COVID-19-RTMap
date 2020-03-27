@@ -23,16 +23,7 @@ header {
   width: 80%;
   margin: 0 auto;
 }
-.presupuesto p{
-  margin-bottom: 0;
-  font-weight: bold;
-}
-.presupuesto p span {
-  font-weight: normal;
-}
-#gastos {
-  margin-bottom: 30px;
-}
+
 h1 {
   font-family: 'Raleway', sans-serif;
   font-weight: 100;
@@ -81,29 +72,7 @@ h2 {
   background-color: #fff3cd;
   border-color: #ffeeba;
 }
-.gastos-realizados  {
-  margin-bottom: 2rem;
-}
-.gastos-realizados li{
-  list-style: none;
-  margin-bottom: 0rem;
-  border-bottom: 1px solid #e1e1e1;
-  padding: 1rem 0;
-}
-.gastos-realizados li:last-of-type {
-  margin-bottom: 0!important;
-}
-.gastos-realizados li p {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin:0;
-}
-.gastos-realizados li p .gasto {
-  background-color: #004085;
-  padding: 1rem;
-  color:white;
-}
+
 .leaflet-container {
   width: 100%;
   height: 100vh;
