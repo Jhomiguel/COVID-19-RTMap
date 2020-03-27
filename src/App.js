@@ -4,13 +4,17 @@ import Header from './components/Header'
 import CovidMap from './components/CovidMap'
 import CovidStats from './components/CovidStats'
 import firebase from 'firebase'
+import AddCase from './components/AddCase'
 
 
 function App() {
   
   const[datos,guardarDatos]=useState({user:''}); 
-  const[posiciones,guardarPosicionActual]=useState({posicionactual: null})
+  const[posicion,guardarPosicionActual]=useState({posicionactual: null});
+  const[posiciones,guardarPosiciones]=useState([])
 
+
+    const {user}=datos;
       const handlePosition=e=>{
         guardarPosicionActual({posicionactual: e.latlng});
       }
@@ -29,14 +33,24 @@ function App() {
           firebase.auth().signInWithPopup(provider)
           .then(result=>console.log(result.user.email))
          }
-       const handleLogOut=()=>{
+        const handleLogOut=()=>{
           firebase.auth().signOut()
           .then(()=>console.log('Te has desconectado'))
           .catch(error=>console.error(`Eror: ${error.code}: ${error.message}`))
         }
 
+        const handleCase=()=>{
 
-        
+            const dbRef=firebase.database().ref('VirusMapLocations')
+            const newLocation = dbRef.push();
+            const data={
+              longitud:posicion.posicionactual.lng,
+              latitud:posicion.posicionactual.lat,
+              CasoRegistradoPor: datos.user.displayName
+            }
+            newLocation.set(data);
+        }
+
      return (
       <div className="contenido">
       <div className="contenido-principal">
@@ -47,9 +61,16 @@ function App() {
       <CovidMap 
         handlePosition={handlePosition}
         user={datos.user}
-        posiciones={posiciones}
+        posicion={posicion}
       />
-      
+       {user?(
+        <AddCase
+        handleCase={handleCase}
+        />
+        
+       ):(
+        null
+       )}
       <CovidStats/>
       </div>
       
