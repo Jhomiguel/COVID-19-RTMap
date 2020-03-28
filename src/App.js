@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import "./App.css";
 import Header from "./components/Header";
 import CovidMap from "./components/CovidMap";
 import firebase from "firebase";
 import AddCase from "./components/AddCase";
+import CovidStats from "./components/CovidStats";
 
 function App() {
+  const [globalstats, saveGlobalStats] = useState([]);
   const [datos, guardarDatos] = useState({ user: "" });
   const [posicion, guardarPosicionActual] = useState({ posicionactual: null });
   const [posiciones, guardarPosiciones] = useState({ ubicaciones: [] });
@@ -25,14 +26,22 @@ function App() {
       .catch(error => console.log(error));
   }, []);
 
+  useEffect(() => {
+    Axios.get("https://thevirustracker.com/free-api?global=stats")
+      .then(res => {
+        saveGlobalStats(res.data);
+      })
+      .catch(error => console.log(error));
+  }, []);
+
   const { user } = datos;
 
   const handleCurrentPosition = () => {
     if (user) {
       navigator.geolocation.getCurrentPosition(location =>
         saveUserCurrentPosition({
-          lat: location.coords.latitude.toPrecision(14),
-          lng: location.coords.longitude.toPrecision(14),
+          lat: location.coords.latitude,
+          lng: location.coords.longitude,
           zoom: 3
         })
       );
@@ -117,7 +126,6 @@ function App() {
           apiData={apidata}
           saveApiData={saveApiData}
         />
-
         {user ? <AddCase posicion={posicion} handleCase={handleCase} /> : null}
       </div>
     </div>

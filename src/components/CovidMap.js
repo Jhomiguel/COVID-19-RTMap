@@ -1,5 +1,11 @@
 import React from "react";
-import { Map, Marker, Popup, TileLayer, L } from "react-leaflet";
+import { Map, Marker, Popup, TileLayer } from "react-leaflet";
+import { Icon } from "leaflet";
+
+const myIcon = new Icon({
+  iconUrl: "/covid-19.svg",
+  iconSize: [25, 25]
+});
 
 const CovidMap = ({
   handlePosition,
@@ -19,9 +25,9 @@ const CovidMap = ({
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
 
-      {apiData.slice(0 - 80).map(datos => {
+      {apiData.slice(0 - 40).map(datos => {
         return (
-          <Marker position={[datos.lat, datos.long]} draggable={true}>
+          <Marker position={[datos.lat, datos.long]} icon={myIcon}>
             <Popup position={saveApiData}>
               <div>
                 Place: {datos.combinedKey} <br />
@@ -35,16 +41,21 @@ const CovidMap = ({
       })}
 
       {user ? (
-        <Marker position={{ lat, lng }} draggable={true}>
+        <Marker position={{ lat, lng }}>
           <Popup position={{ lat, lng }}>
-            Mi ubicacion actual es:{" "}
+            Mi ubicacion actual es: <br />
+            {user.displayName}
             <pre>{JSON.stringify({ lat, lng }, null, 2)}</pre>
           </Popup>
         </Marker>
       ) : null}
       {user
         ? posicion.posicionactual && (
-            <Marker position={posicion.posicionactual} draggable={true}>
+            <Marker
+              position={posicion.posicionactual}
+              draggable={true}
+              icon={myIcon}
+            >
               <Popup position={posicion.posicionactual}>
                 Ubicacion del marcador{" "}
                 <pre>{JSON.stringify(posicion, null, 2)}</pre>

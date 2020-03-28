@@ -1,27 +1,16 @@
-import React from 'react';
-import {Button} from 'react-bootstrap'
+import React from "react";
+import { Button } from "react-bootstrap";
 
-const AddCase = ({handleCase,posicion}) => {
+const AddCase = ({ handleCase, posicion }) => {
+  return (
+    <div>
+      {posicion.posicionactual ? (
+        <Button variant="danger" size="lg" block onClick={handleCase}>
+          Add A New Case
+        </Button>
+      ) : null}
+    </div>
+  );
+};
 
-
-    return ( 
-        <div>
-          {posicion.posicionactual ? 
-          <Button
-          variant="danger" 
-          size="lg" block
-          onClick={handleCase}>
-            Add New Case
-         </Button>
-        
-          :
-          null
-          }
-        
-        
-        </div>
-       
-     );
-}
- 
 export default AddCase;
