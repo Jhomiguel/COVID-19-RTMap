@@ -2,9 +2,9 @@ import React,{useState,useEffect} from 'react';
 import './App.css';
 import Header from './components/Header'
 import CovidMap from './components/CovidMap'
-import CovidStats from './components/CovidStats'
 import firebase from 'firebase'
 import AddCase from './components/AddCase'
+
 
 
 function App() {
@@ -12,9 +12,34 @@ function App() {
   const[datos,guardarDatos]=useState({user:''}); 
   const[posicion,guardarPosicionActual]=useState({posicionactual: null});
   const[posiciones,guardarPosiciones]=useState({ubicaciones: []})
+  const[userposition,saveUserCurrentPosition]=useState({lat:null,lng:null,zoom:null})
+  
+  const {user}=datos;
+
+  // latlng={
+  //   lng:location.coords.latitude,
+  //   lat:location.coords.longitude
+    
+      const handleCurrentPosition = ()=>{
+        if(user){
+          navigator.geolocation.getCurrentPosition(location=>(
+            saveUserCurrentPosition({
+            lat:location.coords.latitude.toPrecision(14),
+            lng: location.coords.longitude.toPrecision(14),
+          zoom:10})
+                  
+          ));
+        }
+        else{
+          saveUserCurrentPosition({
+            lat:null,
+            lng:null
+          })
+        }
+      }
 
 
-    const {user}=datos;
+
       const handlePosition=e=>{
         guardarPosicionActual({posicionactual: e.latlng});
       }
@@ -34,7 +59,6 @@ function App() {
                 
                 ubicaciones: posiciones.ubicaciones.concat(snapshot.val())
             })
-           
           })
           // eslint-disable-next-line
         ),[])
@@ -51,7 +75,7 @@ function App() {
         }
 
         const handleCase=()=>{
-
+          
             const dbRef=firebase.database().ref('VirusMapLocations')
             const newLocation = dbRef.push();
             const data={
@@ -62,11 +86,16 @@ function App() {
               CasoRegistradoPor: datos.user.displayName
             }
             newLocation.set(data);
+            alert('Se ha registrado un nuevo caso')
+            
         }
 
      return (
+      
       <div className="contenido">
+        <h1 className="header">Covid-19 Map Tracker</h1>
       <div className="contenido-principal">
+        <button onClick={handleCurrentPosition}>GetPosition</button>
       <Header
         user={datos.user}
         handleAuth={handleAuth}
@@ -76,16 +105,20 @@ function App() {
         user={datos.user}
         posicion={posicion}
         posiciones={posiciones.ubicaciones}
+        userCurrentPosition={userposition}
       />
+      
        {user?(
         <AddCase
+        posicion={posicion}
         handleCase={handleCase}
         />
         
-       ):(
+       ):
+       (
         null
        )}
-      <CovidStats/>
+     
       </div>
       
       </div>

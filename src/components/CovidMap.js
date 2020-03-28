@@ -1,6 +1,7 @@
 import React from 'react';
 import {Map,Marker,Popup,TileLayer} from 'react-leaflet'
 
+
 // eslint-disable-next-line
 const consultarApi=()=>{
     const api =fetch('https://covid19.mathdro.id/api/confirmed');
@@ -11,17 +12,12 @@ const consultarApi=()=>{
     })  
 }
 
+ 
 
-const CovidMap = ({handlePosition,user,posicion,ubicaciones}) => {
+const CovidMap = ({handlePosition,user,posicion,ubicaciones,userCurrentPosition}) => {
 
-    
-    return ( 
-        <Map center={[45.4, -75.7]} zoom={12} onclick={handlePosition}>
-           <TileLayer
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  />
-                  {/* {ubicaciones.map(location=>(
+    const {lat,lng,zoom}= userCurrentPosition
+     {/* {ubicaciones.map(location=>(
                     <Marker position={location.ubicacion} draggable={true}>
                       <Popup position={location.ubicacion}>
                           Ubicacion: <pre>{JSON.stringify(location, null, 2)}</pre>
@@ -29,22 +25,36 @@ const CovidMap = ({handlePosition,user,posicion,ubicaciones}) => {
                       </Marker>
                   ))  
                   } */}
-
-                  
                     {/* <Marker position={ubicaciones.latlng} draggable={true}>
-                      
                       </Marker> */}
-                  
+
+  
+    return ( 
+     
+        <Map center={[lat, lng]} zoom={zoom} onClick={handlePosition}>
+           <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                  />
+                      {user?(
+                        <Marker position={{lat,lng}} draggable={true}>
+                        <Popup position={{lat,lng}}>
+                           Mi ubicacion actual es:  <pre>{JSON.stringify({lat,lng}, null, 2)}</pre>
+                        </Popup>
+                        </Marker>
+                      ):(
+                        null
+                      )}
                   
                   
                     {
                       user
-                      ?  (posicion.posicionactual && <Marker position={posicion.posicionactual} draggable={true}>
+                      ? (posicion.posicionactual && <Marker position={posicion.posicionactual} draggable={true}>
                       <Popup position={posicion.posicionactual}>
                           Ubicacion del marcador <pre>{JSON.stringify(posicion, null, 2)}</pre>
                       </Popup>
                       </Marker>)
-                      :(null)
+                      :(posicion.posicionactual= null)
                     }
         </Map>
      );
