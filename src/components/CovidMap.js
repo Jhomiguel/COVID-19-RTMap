@@ -14,7 +14,8 @@ const CovidMap = ({
   ubicaciones,
   userCurrentPosition,
   apiData,
-  saveApiData
+  saveApiData,
+  guardarPosiciones
 }) => {
   const { lat, lng, zoom } = userCurrentPosition;
 
@@ -25,9 +26,9 @@ const CovidMap = ({
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
 
-      {apiData.slice(0 - 40).map(datos => {
+      {apiData.slice(0 - 10).map((datos, i) => {
         return (
-          <Marker position={[datos.lat, datos.long]} icon={myIcon}>
+          <Marker position={[datos.lat, datos.long]} icon={myIcon} key={i}>
             <Popup position={saveApiData}>
               <div>
                 Place: {datos.combinedKey} <br />
@@ -39,6 +40,14 @@ const CovidMap = ({
           </Marker>
         );
       })}
+
+      {/* {ubicaciones.map((datos, i) => {
+        return (
+          <Marker position={[datos.latlng]} icon={myIcon} key={i}>
+            <Popup position={guardarPosiciones}></Popup>
+          </Marker>
+        );
+      })} */}
 
       {user ? (
         <Marker position={{ lat, lng }}>

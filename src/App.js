@@ -6,6 +6,7 @@ import AddCase from "./components/AddCase";
 import CovidStats from "./components/CovidStats";
 
 function App() {
+  const [apidata, saveApiData] = useState([]);
   const [globalstats, saveGlobalStats] = useState([]);
   const [datos, guardarDatos] = useState({ user: "" });
   const [posicion, guardarPosicionActual] = useState({ posicionactual: null });
@@ -15,7 +16,6 @@ function App() {
     lng: -71.493585,
     zoom: 5
   });
-  const [apidata, saveApiData] = useState([]);
 
   const Axios = require("axios");
   useEffect(() => {
@@ -29,7 +29,7 @@ function App() {
   useEffect(() => {
     Axios.get("https://thevirustracker.com/free-api?global=stats")
       .then(res => {
-        saveGlobalStats(res.data);
+        saveGlobalStats(res.data.results[0]);
       })
       .catch(error => console.log(error));
   }, []);
@@ -71,9 +71,7 @@ function App() {
         .database()
         .ref("VirusMapLocations")
         .on("child_added", snapshot => {
-          guardarPosiciones({
-            ubicaciones: posiciones.ubicaciones.concat(snapshot.val())
-          });
+          guardarPosiciones(snapshot.val());
         }),
     // eslint-disable-next-line
     []
@@ -122,12 +120,14 @@ function App() {
           user={datos.user}
           posicion={posicion}
           posiciones={posiciones.ubicaciones}
+          guardarPosiciones={guardarPosiciones}
           userCurrentPosition={userposition}
           apiData={apidata}
           saveApiData={saveApiData}
         />
         {user ? <AddCase posicion={posicion} handleCase={handleCase} /> : null}
       </div>
+      <CovidStats globalstats={globalstats} />
     </div>
   );
 }
