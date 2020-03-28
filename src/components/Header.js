@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Navbar, Nav, Image } from "react-bootstrap";
 
 const Header = ({ handleAuth, handleLogOut, user }) => {
@@ -8,7 +8,9 @@ const Header = ({ handleAuth, handleLogOut, user }) => {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link href="#home">Map</Nav.Link>
+          <Nav.Link href="#home">
+            <span>Map</span>
+          </Nav.Link>
           <Nav.Link href="#link">Global Stats</Nav.Link>
         </Nav>
       </Navbar.Collapse>
