@@ -1,19 +1,12 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Navbar, Nav, Image } from "react-bootstrap";
 
 const Header = ({ handleAuth, handleLogOut, user }) => {
   return (
     <Navbar bg="light" expand="lg">
-      <Navbar.Brand href="#home">Covid-19 Map Tracker</Navbar.Brand>
+      <Navbar.Brand href="#home">COVID-19 Map Tracker</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="mr-auto">
-          <Nav.Link href="#home">
-            <span>Map</span>
-          </Nav.Link>
-          <Nav.Link href="#link">Global Stats</Nav.Link>
-        </Nav>
-      </Navbar.Collapse>
+
       <Navbar.Collapse className="justify-content-end">
         {user ? (
           <Navbar.Text>
